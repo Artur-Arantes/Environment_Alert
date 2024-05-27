@@ -1,0 +1,36 @@
+version: '3'
+services:
+  oracle-xe:
+    image:  pvargacl/oracle-xe-18.4.0:latest
+    healthcheck:
+      test: [ "CMD", "/opt/oracle/checkDBStatus.sh" ]
+      interval: 2s
+    ports:
+      - "49161:1521"
+    environment:
+      - ORACLE_ALLOW_REMOTE=true
+      - ORACLE_DISABLE_APEX=true
+      - ORACLE_DISABLE_DEFAULT=true
+      - ORACLE_PWD=oracle
+    networks:
+      - rede
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+       oracle-xe:
+         condition: service_healthy
+    ports:
+      - 8080:8080
+    environment:
+      URL_DO_BANCO: jdbc:oracle:thin:@oracle-xe:1521:XE
+      USUARIO_DO_BANCO: system
+      PASSWORD_DO_BANCO: oracle
+      SPRING_MAIL_HOST: smtp.office365.com
+      SPRING_MAIL_USERNAME: exemplo@hotmail.com
+      SPRING_MAIL_PASSWORD: exemplo
+    networks:
+      - rede
+networks:
+  rede:
