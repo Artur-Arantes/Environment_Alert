@@ -23,4 +23,4 @@ ENV PROFILE=prd
 EXPOSE 8080
 USER 1001
 
-ENTRYPOINT [ "-Dspring.profiles.active=${PROFILE}","/deployments/run-java.sh" ]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar", "/deployments/app.jar"]
