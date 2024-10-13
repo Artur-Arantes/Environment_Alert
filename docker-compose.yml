@@ -24,6 +24,7 @@ services:
     ports:
       - 8080:8080
     environment:
+      PROFILE: prd
       URL_DO_BANCO: jdbc:oracle:thin:@oracle-xe:1521:XE
       USUARIO_DO_BANCO: system
       PASSWORD_DO_BANCO: oracle

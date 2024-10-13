@@ -2,11 +2,11 @@ FROM openjdk:17.0.2
 
 ARG RUN_JAVA_VERSION=1.3.8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en'
-  # ENV JAVA_OPTIONS="-javaagent:/agent/agent.jar"
+# ENV JAVA_OPTIONS="-javaagent:/agent/agent.jar"
   
   
-  # Install java and the run-java script
-  # Also set up permissions for user 1001
+# Install java and the run-java script
+# Also set up permissions for user 1001
 RUN mkdir -p /application/files
 RUN chown -vR 1001:1001 /application
 RUN mkdir /deployments \
@@ -19,8 +19,8 @@ RUN mkdir /deployments \
 
 
 COPY /target/*.jar /deployments/app.jar
-
+ENV PROFILE=prd
 EXPOSE 8080
 USER 1001
 
-ENTRYPOINT [ "/deployments/run-java.sh" ]
+ENTRYPOINT [ "-Dspring.profiles.active=${PROFILE}","/deployments/run-java.sh" ]
