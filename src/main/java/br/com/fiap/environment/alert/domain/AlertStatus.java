@@ -18,8 +18,7 @@ import java.util.List;
 public class AlertStatus {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ALERT")
-    @SequenceGenerator(name = "SEQ_ALERT", sequenceName = "SEQ_ALERT", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_alt")
     private long id;
 

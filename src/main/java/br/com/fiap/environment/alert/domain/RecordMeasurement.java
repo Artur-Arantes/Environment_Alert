@@ -19,8 +19,7 @@ import java.time.LocalDateTime;
 public class RecordMeasurement {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_REC")
-    @SequenceGenerator(name = "SEQ_REC", sequenceName = "SEQ_REC", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rec")
     private Long id;
 
