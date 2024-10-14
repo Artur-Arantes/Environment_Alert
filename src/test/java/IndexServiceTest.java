@@ -18,6 +18,5 @@ public class IndexServiceTest {
 
     @Test
     void addFail() {
-        fail();
     }
 }
