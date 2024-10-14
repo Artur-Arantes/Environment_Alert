@@ -35,7 +35,7 @@ services:
       PASSWORD_DO_BANCO: 123456
       SPRING_MAIL_HOST: smtp.office365.com
       SPRING_MAIL_USERNAME: exemplo@hotmail.com
-      SPRING_MAIL_PASSWORD: exemplo
+      SPRING_MAIL_PASSWORD: exemplo1
     networks:
       - rede
 
