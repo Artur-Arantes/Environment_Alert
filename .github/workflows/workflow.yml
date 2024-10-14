@@ -38,7 +38,8 @@ jobs:
 
       - name: Build Java Application
         run: mvn clean package
-
+      - name: mvn unit test
+        run: mvn test
       - name: Build and Start Docker Containers
         run: |
           docker-compose up --build -d
