@@ -5,9 +5,7 @@ on:
     types:
       - opened
       - reopened
-    branches:
-    - "feature/**"
-    - "hotfix/**"
+    branches: "feature/**"
 jobs:
   checkout_java_docker:
     runs-on: ubuntu-latest
