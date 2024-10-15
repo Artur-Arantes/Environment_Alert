@@ -7,8 +7,9 @@ on:
       - reopened
     branches:
       - main
+
 jobs:
-  checkout_java_docker:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Git Checkout
@@ -20,29 +21,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            apt-transport-https \
-            ca-certificates \
-            curl \
-            software-properties-common \
-            lsb-release \
-            && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - \
-            && echo "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list \
-            && sudo apt-get update \
-            && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-
       - name: Build Java Application
         run: mvn clean package
-      - name: mvn unit test
-        run: mvn test
-      - name: Build and Start Docker Containers
-        run: |
-          docker-compose up --build -d
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER_NAME }}
+          password: ${{ secrets.DOCKERHUB_SECRET }}
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:latest
