@@ -1,11 +1,11 @@
 name: Continuous Integration
 on:
   push:
-    branches: "main"
+    branches: "feature/main"
 
 env:
-  IMAGE_NAME: simple-api-java
-  AZURE_WEBAPP_NAME: simple-api-java
+  IMAGE_NAME: environment-alert-api-dev
+  AZURE_WEBAPP_NAME: environment-alert-api-dev
 
 jobs:
   build:
