@@ -31,7 +31,7 @@ services:
     environment:
       PROFILE: prd
       USUARIO_DO_BANCO: root
-      URL_DO_BANCO: jdbc:mysql://db:3306/environment_alert?allowPublicKeyRetrieval=true&useSSL=false
+      URL_DO_BANCO: jdbc:mysql://environment-alert-dev-bd.mysql.database.azure.com:3306/environment_alert?allowPublicKeyRetrieval=true&useSSL=false
       PASSWORD_DO_BANCO: 123456
       SPRING_MAIL_HOST: smtp.office365.com
       SPRING_MAIL_USERNAME: exemplo@hotmail.com
