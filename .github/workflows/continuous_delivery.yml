@@ -47,4 +47,4 @@ jobs:
         with:
           app-name: 'environment-alert-api-dev'
           publish-profile: ${{ secrets.AZURE_PROFILE }}
-          images: 'ghcr.io/${{ secrets.DOCKERHUB_USER_NAME }}/${{ env.IMAGE_NAME }}:latest'
+          images: 'ghcr.io/${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:latest'
