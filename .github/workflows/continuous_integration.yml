@@ -33,5 +33,6 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v6
         with:
+          context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:latest
