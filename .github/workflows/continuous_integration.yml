@@ -6,8 +6,7 @@ on:
       - opened
       - reopened
     branches:
-    - "feature/**"
-    - "hotfix/**"
+      - main
 jobs:
   checkout_java_docker:
     runs-on: ubuntu-latest
