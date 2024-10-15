@@ -1,9 +1,13 @@
-name: workflow-test
+name: continuous_integration
 
 on:
-  push:
-    branches: "main"
-
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+    - "feature/**"
+    - "hotfix/**"
 jobs:
   checkout_java_docker:
     runs-on: ubuntu-latest
