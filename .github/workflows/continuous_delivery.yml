@@ -41,13 +41,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: ${{ secrets.DOCKERHUB_USER_NAME }}
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USER_NAME }} --password-stdin
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'environment-alert-api-dev'
           publish-profile: ${{ secrets.AZURE_PROFILE }}
-          images: 'ghcr.io/${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:latest'
+          images: '${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:latest'
+
