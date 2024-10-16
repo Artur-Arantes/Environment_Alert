@@ -36,3 +36,9 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:latest
+
+      - name: Verify Image Push
+        run: |
+          echo "Verifying if image was pushed successfully..."
+          docker pull ${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:latest
+          docker images
