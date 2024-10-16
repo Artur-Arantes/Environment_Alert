@@ -29,6 +29,7 @@ jobs:
         name: Build
         uses: docker/build-push-action@v6
         with:
+          context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USER_NAME }}/${{ env.IMAGE_NAME }}:latest
   deploy:
