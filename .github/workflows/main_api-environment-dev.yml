@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -11,37 +14,56 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USER_NAME }}
-        password: ${{ secrets.DOCKERHUB_SECRET }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER_NAME }}
+          password: ${{ secrets.DOCKERHUB_SECRET }}
 
-    - name: Build and push container image to Docker Hub
-      uses: docker/build-push-action@v3
-      with:
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:${{ github.sha }}
-        file: ./Dockerfile
+      - name: Build and push container image to Docker Hub
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:${{ github.sha }}
+          file: ./Dockerfile
 
-  deploy:
+  deploy-staging:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: build
+    environment:
+      name: 'staging'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Deploy to Azure Web App - Staging
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'api-environment-dev'
+          slot-name: 'staging'
+          publish-profile: ${{ secrets.AZURE_PROFILE_STAGE}}
+          images: '${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:${{ github.sha }}'
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: build
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'api-environment-dev'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_ac579efe5d7a42fba9c2fceeb42b91db }}
-        images: '${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:${{ github.sha }}'
+      - name: Deploy to Azure Web App - Production
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'api-environment-dev'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_Production }}
+          images: '${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:${{ github.sha }}'
