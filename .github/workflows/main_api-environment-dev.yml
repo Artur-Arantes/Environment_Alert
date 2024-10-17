@@ -63,5 +63,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'api-environment-dev'
-          publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE_PRODUCTION }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AC579EFE5D7A42FBA9C2FCEEB42B91DB }}
           images: '${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:${{ github.sha }}'
