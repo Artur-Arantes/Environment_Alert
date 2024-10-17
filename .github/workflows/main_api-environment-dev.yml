@@ -45,7 +45,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'api-environment-dev'
+          app-name: 'api-environment-alert-dev'
           slot-name: 'staging'
           publish-profile: ${{ secrets.AZURE_PROFILE_STAGE }}
           images: '${{ secrets.DOCKERHUB_USER_NAME }}/environment-alert:${{ github.sha }}'
